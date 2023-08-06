@@ -66,6 +66,10 @@ a:hover {
   color: #005564;
 }
 
+.applogo {
+  width: 10%;
+}
+
 img {
   max-width: 100%;
   height: auto;
