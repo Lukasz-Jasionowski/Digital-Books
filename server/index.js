@@ -29,6 +29,16 @@ app.get("/api/books", async (req, res) => {
     }
 });
 
+app.get("/api/books/:slug", async (req, res) => {
+    try {
+        const slugParam = req.params.slug;
+        const data = await Book.findOne({ slug: slugParam });
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: "An error occured while fetching books." });
+    }
+});
+
 app.get("/", (req, res) => {
     res.json("Hello!");
 });
