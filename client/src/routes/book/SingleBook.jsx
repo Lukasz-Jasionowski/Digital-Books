@@ -38,6 +38,7 @@ function SingleBook() {
             <div className='bookdetails'>
                 <div className='col-1'>
                     <img src={import.meta.env.VITE_APP_UPLOADS_IMG + `${data.thumbnail}`} alt={data?.title} />
+                    <Link to={`/editbook/${data.slug}`}>Edit 📝</Link>
                 </div>
                 <div className='col-2'>
                     <h1>{data?.title}</h1>
