@@ -40,6 +40,7 @@ function Book() {
         <div>
             <h1>Books</h1>
             <p>This is where NodeJS, Express & MongoDB grab some data.<br></br>The data below is pulled from a MongoDB database.</p>
+            <Link to="/createbook">+ Add New Book</Link>
             <h2>Fetch Example</h2>
             <div className='filters'>
                 <label>Categories</label>
