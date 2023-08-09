@@ -10,19 +10,23 @@ function CreateBook() {
     const [categories, setCategories] = useState([]);
     const [thumbnail, setThumbnail] = useState(null);
     const [sumbitted, setSumbitted] = useState('');
+    const [image, setImage] = useState(NoImageSelected);
 
     const createBook = async (e) => {
         e.preventDefault();
+
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('slug', slug);
+        formData.append('stars', stars);
+        formData.append('description', description);
+        formData.append('category', categories);
+        formData.append('thumbnail', thumbnail);
+
         try {
             const response = await fetch(import.meta.env.VITE_APP_BASE_URL, {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(
-                    {
-                        title: title,
-                        slug: slug
-                    }
-                )
+                body: formData
             })
             if (response.ok) {
                 setTitle('');
@@ -41,6 +45,13 @@ function CreateBook() {
         setCategories(e.target.value.split(',').map((category) => category.trim()));
     }
 
+    const onImageChange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            setImage(URL.createObjectURL(e.target.files[0]));
+            setThumbnail(e.target.files[0]);
+        }
+    }
+
     return (
         <div>
             <Link to={"/books"}>🔙 Books</Link>
@@ -54,8 +65,8 @@ function CreateBook() {
                 <form className='bookdetails' onSubmit={createBook}>
                     <div className='col-1'>
                         <label>Upload Thumbnail</label>
-                        <img src={NoImageSelected} alt='preview image' />
-                        <input type='file' accept='image/gif, image/jpeg, image/png' />
+                        <img src={image} alt='preview image' />
+                        <input onChange={onImageChange} type='file' accept='image/gif, image/jpeg, image/png' />
                     </div>
                     <div className='col-2'>
                         <div>
