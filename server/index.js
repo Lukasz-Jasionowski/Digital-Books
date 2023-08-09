@@ -3,6 +3,7 @@ const cors = require("cors");
 const express = require("express");
 const connectDB = require("./connectDB");
 const Book = require("./models/Books");
+const multer = require("multer");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -39,7 +40,19 @@ app.get("/api/books/:slug", async (req, res) => {
     }
 });
 
-app.post("/api/books", async (req, res) => {
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + '-' + file.originalname);
+    }
+})
+
+const upload = multer({ storage: storage });
+
+app.post("/api/books", upload.single("thumbnail"), async (req, res) => {
     try {
         const newBook = new Book({
             title: req.body.title,
@@ -47,7 +60,7 @@ app.post("/api/books", async (req, res) => {
             stars: req.body.stars,
             description: req.body.description,
             category: req.body.category,
-            // thumbnail: req.file.thumbnail TO DO
+            thumbnail: req.file.filename
         })
         await Book.create(newBook);
         res.json("Data Submitted");
