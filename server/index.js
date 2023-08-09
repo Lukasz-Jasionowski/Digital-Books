@@ -69,6 +69,28 @@ app.post("/api/books", upload.single("thumbnail"), async (req, res) => {
     }
 });
 
+app.put("/api/books", upload.single("thumbnail"), async (req, res) => {
+    try {
+        const bookId = req.body.bookId;
+        const updateBook = {
+            title: req.body.title,
+            slug: req.body.slug,
+            stars: req.body.stars,
+            description: req.body.description,
+            category: req.body.category,
+        }
+
+        if (req.file) {
+            updateBook.thumbnail = req.file.filename;
+        }
+
+        await Book.findByIdAndUpdate(bookId, updateBook);
+        res.json("Data Edited");
+    } catch (error) {
+        res.status(500).json({ error: "An error occured while editing book." });
+    }
+});
+
 app.get("/", (req, res) => {
     res.json("Hello!");
 });
