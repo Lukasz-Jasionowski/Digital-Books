@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import NoImageSelected from "../../assets/no-image-selected.jpg"
 
 function EditBook() {
+    const navigate = useNavigate();
     const urlSlug = useParams();
     const baseURL = import.meta.env.VITE_APP_BASE_URL + `/${urlSlug.slug}`;
 
@@ -83,11 +84,31 @@ function EditBook() {
         }
     }
 
+    const removeBook = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch(
+                import.meta.env.VITE_APP_BASE_URL + `/${bookId}`,
+                {
+                    method: "DELETE"
+                }
+            )
+
+            if (response.ok) {
+                navigate("/books");
+                console.log("Book removed!");
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
         <div>
             <h1>Edit Book</h1>
             <p>This is where NodeJS, Express & MongoDB grab some data.<br></br>Data below is pulled from a MongoDB database.</p>
-
+            <button onClick={removeBook} className='delete'>Delete Book</button>
             {sumbitted ? (
                 <p>Data submitted successfully!</p>
             ) :
