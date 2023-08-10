@@ -31,7 +31,7 @@ function EditBook() {
             setDescription(data.description);
             setThumbnail(data.thumbnail);
         } catch (error) {
-
+            console.log(error);
         }
     }
 
