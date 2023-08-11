@@ -3,9 +3,10 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import NoImageSelected from "../../assets/no-image-selected.jpg"
 
 function EditBook() {
+    const serverUrl = import.meta.env.VITE_SERVER_URL;
     const navigate = useNavigate();
     const urlSlug = useParams();
-    const baseURL = import.meta.env.VITE_APP_BASE_URL + `/${urlSlug.slug}`;
+    const baseURL = `${serverUrl}/api/books/${urlSlug.slug}`;
 
     const [bookId, setBookId] = useState('');
     const [title, setTitle] = useState('');
@@ -56,7 +57,7 @@ function EditBook() {
         }
 
         try {
-            const response = await fetch(import.meta.env.VITE_APP_BASE_URL, {
+            const response = await fetch(`${serverUrl}/api/books`, {
                 method: "PUT",
                 body: formData
             })
@@ -88,7 +89,7 @@ function EditBook() {
         e.preventDefault();
         try {
             const response = await fetch(
-                import.meta.env.VITE_APP_BASE_URL + `/${bookId}`,
+                `${serverUrl}/api/books/${bookId}`,
                 {
                     method: "DELETE"
                 }
@@ -119,7 +120,7 @@ function EditBook() {
                         {image ? (
                             <img src={image} alt='preview image' />
                         ) :
-                            <img src={import.meta.env.VITE_APP_UPLOADS_IMG + thumbnail} alt='preview image' />
+                            <img src={`${serverUrl}/uploads/${thumbnail}`} alt='preview image' />
                         }
                         <input onChange={onImageChange} type='file' accept='image/gif, image/jpeg, image/png' />
                     </div>

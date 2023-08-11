@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 
 function SingleBook() {
-    const baseUrl = import.meta.env.VITE_APP_BASE_URL;
+    const serverUrl = import.meta.env.VITE_SERVER_URL;
     const [data, setData] = useState([]);
     const urlSlug = useParams();
+    const baseUrl = `${serverUrl}/api/books/${urlSlug.slug}`;
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`${baseUrl}/${urlSlug.slug}`);
+                const response = await fetch(baseUrl);
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch data.');
@@ -37,7 +38,7 @@ function SingleBook() {
             <Link to={"/books"}>🔙 Books</Link>
             <div className='bookdetails'>
                 <div className='col-1'>
-                    <img src={import.meta.env.VITE_APP_UPLOADS_IMG + `${data.thumbnail}`} alt={data?.title} />
+                    <img src={`${serverUrl}/uploads/${data?.thumbnail}`} alt={data?.title} />
                     <Link to={`/editbook/${data.slug}`}>Edit 📝</Link>
                 </div>
                 <div className='col-2'>

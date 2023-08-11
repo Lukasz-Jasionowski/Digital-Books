@@ -3,6 +3,7 @@ import NoImageSelected from "../../assets/no-image-selected.jpg"
 import { Link } from 'react-router-dom'
 
 function CreateBook() {
+    const serverUrl = import.meta.env.VITE_SERVER_URL;
     const [title, setTitle] = useState('');
     const [slug, setSlug] = useState('');
     const [stars, setStars] = useState(0);
@@ -24,7 +25,7 @@ function CreateBook() {
         formData.append('thumbnail', thumbnail);
 
         try {
-            const response = await fetch(import.meta.env.VITE_APP_BASE_URL, {
+            const response = await fetch(`${serverUrl}/api/books`, {
                 method: "POST",
                 body: formData
             })
