@@ -3,9 +3,9 @@ import { Link, useParams } from 'react-router-dom'
 
 function SingleBook() {
     const serverUrl = import.meta.env.VITE_SERVER_URL;
-    const baseUrl = `${serverUrl}/api/books/${urlSlug.slug}`;
     const [data, setData] = useState([]);
     const urlSlug = useParams();
+    const baseUrl = `${serverUrl}/api/books/${urlSlug.slug}`;
 
     useEffect(() => {
         const fetchData = async () => {
